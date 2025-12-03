@@ -14,6 +14,7 @@
 | **`training.ipynb`** | 데이터 전처리, 모델 학습, 검증(CV), 최종 모델 저장 | Learning Curve 시각화 포함 |
 | **`evaluation.ipynb`** | 2025년 미래 데이터(Test Set)를 로드하여 최종 성능 평가 | Data Leakage 방지 |
 | **`inference.ipynb`** | 가상 시나리오(노잼/꿀잼 경기)를 생성하여 모델 추론 시연 | CSV 없이 실행 가능 |
+| **`inference.ipynb`** | 모델 아키텍처 설명, 평가 지표 및 성능 결과, 모델 가중치 저장 위치 | 구글 드라이브 링크 포함 |
 ---
 
 ### 1. Data Split Strategy (Rolling Window)
@@ -31,16 +32,16 @@
 
 ### 3. Target Engineering
 * **Train**: `F1HOTorNOT`과 `RaceFans` 두 평점 사이트의 점수를 정규화하여 평균 사용.
-* **Test**: 사용자가 직접 채점한 **Human Label (MyScore)**을 Ground Truth로 사용하여 실제 체감 재미와의 일치도 검증.
+* **Test**: 사용자가 직접 채점한 **Human Label** (MyScore)을 Ground Truth로 사용하여 실제 체감 재미와의 일치도 검증.
 
 ---
 
 ## Performance Analysis
 
 ### 1. Learning Curve Analysis
-`training.ipynb`에서 `warm_start=True`를 활용하여 나무의 개수(`n_estimators`) 증가에 따른 성능 변화를 추적했습니다.
+`training.ipynb`에서 `warm_start=True`를 활용하여 `n_estimators` 증가에 따른 성능 변화를 추적했습니다.
 * **Train R2** (~0.8) vs **Validation R2** (~0.35)
-* **분석**: 초기(2022년)에는 규정 대변화로 예측이 어려웠으나, 데이터가 누적된 후기(2024년)로 갈수록 검증 성능이 향상되는 **우상향 곡선**을 확인했습니다.
+* 초기(2022년)에는 규정 대변화로 예측이 어려웠으나, 데이터가 누적된 후기(2024년)로 갈수록 검증 성능이 향상되는 우상향 곡선을 확인했습니다. 이는 모델이 데이터가 쌓일수록 일반화 성능이 개선됨을 보여줍니다.
 
 ### 2. Final Evaluation (2025 Season)
 학습된 모델을 2025년 시즌 데이터에 적용한 결과입니다.
@@ -51,12 +52,22 @@
 | **R2 Score** | **0.249272** | 데이터 변동성에 대한 모델의 설명력: 24.9% |
 | **RMSE** | **0.124302** | 오차의 표준편차: 1.24점 |
 
-### 3. Best & Worst Predictions
+### 3. 평가 지표
+- MAE(Mean Absolute Error): 실제 점수와 예측 점수 간의 직관적인 오차 확인.
+- R2 Score: 모델이 전체 데이터의 변동성을 얼마나 잘 설명하는지 비율로 측정.
+- RMSE: 큰 오차에 가중치를 두어 모델의 안정성을 평가.
+  - 주요 성능 지표를 DataFrame을 활용한 표 형태로 정리하여 수치를 명확히 제시했습니다.
+2. Test Set의 독립성 보장
+학습 과정에 전혀 노출되지 않은 2025년 시즌 데이터(`finaltest_data`)를 별도로 로드하여 최종 평가를 수행했습니다.
+전처리 과정에서 `fit()`을 사용하지 않고, 학습 단계에서 저장된 `scaler_features.pkl`을 로드하여 transform()만 수행함으로써 Data Leakage를 원천 차단했습니다.
+제가 직접 채점한 MyScore를 Ground Truth로 사용하여, 모델의 예측이 실제 체감 재미와 얼마나 일치하는지 검증했습니다.
+
+### 4. Best & Worst Predictions
 모델이 가장 잘 맞춘 경기와 어려워한 경기를 분석했습니다.
 * **Best Case**: **Singapore GP, Japanese GP** (오차 < 0.2점)
-    * 통계적 수치(추월, 사고 등)가 실제 재미와 정직하게 비례한 경기들.
+    * 통계적 수치(추월, 사고 등)가 실제 재미와 정직하게 비례한 경기들을 정확히 예측했습니다.
 * **Worst Case**: **Belgian GP, Chinese GP** (오차 > 2.0점)
-    * 수치상으로는 이벤트가 많았으나, 실제로는 단조로운 트레인(DRS Train) 등으로 인해 지루했던 경기. (모델의 과대평가)
+    * 수치상으로는 이벤트가 많았으나 실제로는 지루했거나(과대평가), 반대로 수치는 평범했으나 전략적 긴장감이 높았던(과소평가) 경기들에서 오차가 발생했습니다. 이는 정량적 데이터가 포착하지 못하는 '경기 맥락'의 한계를 시사합니다.
 
 ---
 
