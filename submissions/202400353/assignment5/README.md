@@ -71,8 +71,8 @@
 ---
 
 ## How to Run
-
-1.  **Training**: `training.ipynb`를 실행하여 모델(`f1_excitement_model.pkl`)을 생성합니다.
-2.  **Evaluation**: `evaluation.ipynb`를 실행하여 2025년 예측 성능을 확인합니다.
-3.  **Inference**: `inference.ipynb`를 실행하여 가상 시나리오에 대한 추론 결과를 확인합니다.
+1. [https://drive.google.com/drive/folders/1lJZP2_9pA2Yvw29aAs9rg7FysZ4X1SIH?usp=sharing](https://drive.google.com/drive/folders/1lJZP2_9pA2Yvw29aAs9rg7FysZ4X1SIH?usp=sharing)에 접속합니다.
+2.  **Training**: `training.ipynb`를 실행하여 모델(`f1_excitement_model.pkl`)을 생성합니다.
+3.  **Evaluation**: `evaluation.ipynb`를 실행하여 2025년 예측 성능을 확인합니다.
+4.  **Inference**: `inference.ipynb`를 실행하여 가상 시나리오에 대한 추론 결과를 확인합니다.
     * *Note: 데이터 파일 경로는 `base_path` 변수에서 수정 가능합니다.*
