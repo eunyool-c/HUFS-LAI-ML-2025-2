@@ -14,8 +14,6 @@
 | **`training.ipynb`** | 데이터 전처리, 모델 학습, 검증(CV), 최종 모델 저장 | Learning Curve 시각화 포함 |
 | **`evaluation.ipynb`** | 2025년 미래 데이터(Test Set)를 로드하여 최종 성능 평가 | Data Leakage 방지 |
 | **`inference.ipynb`** | 가상 시나리오(노잼/꿀잼 경기)를 생성하여 모델 추론 시연 | CSV 없이 실행 가능 |
-| **`finaltest_data.csv`** | evaluation에 사용된 데이터셋 | 약 2KB |
-
 ---
 
 ### 1. Data Split Strategy (Rolling Window)
