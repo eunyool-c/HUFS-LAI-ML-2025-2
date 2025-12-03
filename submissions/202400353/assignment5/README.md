@@ -56,13 +56,14 @@
 - MAE(Mean Absolute Error): 실제 점수와 예측 점수 간의 직관적인 오차 확인.
 - R2 Score: 모델이 전체 데이터의 변동성을 얼마나 잘 설명하는지 비율로 측정.
 - RMSE: 큰 오차에 가중치를 두어 모델의 안정성을 평가.
-  - 주요 성능 지표를 DataFrame을 활용한 표 형태로 정리하여 수치를 명확히 제시했습니다.
-2. Test Set의 독립성 보장
+- 주요 성능 지표를 DataFrame을 활용한 표 형태로 정리하여 수치를 명확히 제시했습니다.
+- 
+### 4. Test Set의 독립성 보장
 학습 과정에 전혀 노출되지 않은 2025년 시즌 데이터(`finaltest_data`)를 별도로 로드하여 최종 평가를 수행했습니다.
 전처리 과정에서 `fit()`을 사용하지 않고, 학습 단계에서 저장된 `scaler_features.pkl`을 로드하여 transform()만 수행함으로써 Data Leakage를 원천 차단했습니다.
 제가 직접 채점한 MyScore를 Ground Truth로 사용하여, 모델의 예측이 실제 체감 재미와 얼마나 일치하는지 검증했습니다.
 
-### 4. Best & Worst Predictions
+### 5. Best & Worst Predictions
 모델이 가장 잘 맞춘 경기와 어려워한 경기를 분석했습니다.
 * **Best Case**: **Singapore GP, Japanese GP** (오차 < 0.2점)
     * 통계적 수치(추월, 사고 등)가 실제 재미와 정직하게 비례한 경기들을 정확히 예측했습니다.
@@ -87,3 +88,7 @@
 3.  **Evaluation**: `evaluation.ipynb`를 실행하여 2025년 예측 성능을 확인합니다.
 4.  **Inference**: `inference.ipynb`를 실행하여 가상 시나리오에 대한 추론 결과를 확인합니다.
     * *Note: 데이터 파일 경로는 `base_path` 변수에서 수정 가능합니다.*
+
+---
+
+**Credit**: 과제의 대부분의 과정에서 Gemini pro의 큰 도움을 받았습니다.
